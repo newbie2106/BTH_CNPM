@@ -1,0 +1,12 @@
+
+<!-- Kế thừa và ghi đè laại 'admin/master.html' trong thư mục venv -->
+{% extends 'admin/master.html' %}
+
+{% block body %}
+    {% if current_user.is_authenticated %}
+        <h1 class="text-center text-info">CHÀO MỪNG ĐẾN TRANG QUẢN TRỊ!!!</h1>
+        <h2>CHÀO MỪNG {{current_user.name}}</h2>
+    {% else %}
+         {% include 'admin/login.html' %}
+    {% endif %}
+{% endblock %}
