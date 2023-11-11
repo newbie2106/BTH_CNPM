@@ -1,0 +1,21 @@
+
+
+<!--method là post bởi vì đây là nôội dung riêng tư nên cần 'post' để đóng gói-->
+<!--và gửi yêu cầu đến action="URL" nếu dùng get data sẽ hiển thị trực tiếp gây lộ thông tin ngdung-->
+
+<form action="" method="post">
+    <div class="mb-3 mt-3">
+        <label for="email" class="form-label">Tên Đăng Nhập:</label>
+        <input class="form-control" type="text" id="email" placeholder="Tên đăng nhập" name="username">
+    </div>
+    <div class="mb-3">
+        <label for="pwd" class="form-label">Mật khẩu:</label>
+        <input type="password" class="form-control" id="pwd" placeholder="Nhập mật khẩu" name="password">
+    </div>
+    <div class="form-check mb-3">
+        <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" name="Ghi nhớ tôi"> Ghi nhớ tôi
+        </label>
+    </div>
+    <button type="submit" class="btn btn-primary">Đăng nhập</button>
+</form>
