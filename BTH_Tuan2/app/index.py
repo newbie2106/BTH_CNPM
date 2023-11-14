@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, redirect
 import dao
 from app import app, login
 from flask_login import login_user
@@ -15,19 +15,17 @@ def details(id):
     return render_template('details.html')
 
 
-@app.route('/admin/login.html', methods = ['post'])
+@app.route('/admin/login', methods = ['post'])
 def load_admin_process():
-    request.form.get('username')
-    request.form.get('password')
-
-@login.user_loader  # Tải thông tin ng dùng từ CSDL dựa vào user_id (1) và trả về (2)
-def load_user(user_id): #(1)
     username = request.form.get("username")
     password = request.form.get("password")
-    user = user_id.query.filter(username == username, password == password).first()
+    user = dao.auth_user(username= username, password= password)
     if user:
         login_user(user=user)
     return redirect("/admin")
+@login.user_loader  # Tải thông tin ng dùng từ CSDL dựa vào user_id (1) và trả về (2)
+def load_user(user_id): #(1)
+    return dao.get_user_id(user_id)
 
 if __name__ == '__main__':
     from app import admin

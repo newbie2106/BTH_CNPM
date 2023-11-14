@@ -2,7 +2,8 @@ from flask_admin.contrib.sqla import ModelView
 from app import app, db
 from flask_admin import Admin, BaseView, expose
 from models import Category, Product
-
+from flask_login import logout_user
+from flask import redirect
 
 # app = app sẽ truyền đối tượng app để admin này biết nó đang lk với đối tượng nào d
 admin = Admin(app=app, name='QUẢN TRỊ BÁN HÀNG', template_mode='bootstrap4')
@@ -33,5 +34,12 @@ class MyStatsView(BaseView):
     def index(self):
         return self.render('admin/stats.html')
 
-# Tạo thêm 1 trang trong thanh nav /admin
+class MyLogoutView(BaseView):
+    @expose('/')
+    def index(self):
+        logout_user()
+        return redirect('/admin')
 admin.add_view(MyStatsView(name='Giới Thiệu'))
+admin.add_view(MyLogoutView(name='Đăng Xuất'))
+
+# Tạo thêm 1 trang trong thanh nav /admin

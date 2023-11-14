@@ -1,10 +1,14 @@
-from sqlalchemy import Integer, String, Column, Float, ForeignKey, Boolean
+
+from sqlalchemy import Integer, String, Column, Float, ForeignKey, Boolean, Enum
 from app import db
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
-from flask_login import UserMixin
+from flask_login import UserMixin, logout_user
+import enum
 
-
+class UserRole(enum.Enum):
+    ADMIN = 2
+    USER = 1
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
@@ -13,6 +17,10 @@ class User(db.Model, UserMixin):
     active = Column(Boolean, default=True)
     username = Column(String(50), nullable=False)
     password = Column(String(100), nullable=False)
+    user_role = Column(Enum(UserRole), default=UserRole.USER)
+    def __str__(self):
+        return self.name
+
 
 class Category(db.Model):
     __tablename__ = 'category'
@@ -39,11 +47,20 @@ class Product(db.Model):
         return self.name
 
 
+
+
 if __name__ == '__main__':
     from app import app
     with app.app_context():
-        #c1 = Category(name = 'Mobile')
-        #c2 = Category(name = 'Tablet')
+        db.create_all()
+        c1 = Category(name = 'Mobile')
+        c2 = Category(name = 'Tablet')
+        import hashlib
+        u = User(name='HIỆP TRỊNH',
+                 username='admin',
+                 password=str(hashlib.md5('123456'.encode('utf-8')).hexdigest()),
+                 user_role = UserRole.ADMIN)
+
         p1 = Product(name='Galaxy S30',price=30000000, category_id ='1',
                      image='https://cdn.viettelstore.vn/Images/Product/ProductImage/1778159139.jpeg')
         p2 = Product(name='iPhone 15', price=15000000, category_id='1',
@@ -54,9 +71,8 @@ if __name__ == '__main__':
                      image='https://cdn.viettelstore.vn/Images/Product/ProductImage/1778159139.jpeg')
         p5 = Product(name='iPhone 15 Promax', price=25000000, category_id='1',
                      image='https://cdn.viettelstore.vn/Images/Product/ProductImage/1778159139.jpeg')
-        # db.session.add_all([p1,p2,p3,p4,p5])
-        # db.session.commit()
-        #db.session.add(c1)
-        #db.session.add(c2)
-        # db.session.add(p1)
-        #db.create_all()
+        db.session.add(c1)
+        db.session.add(c2)
+        db.session.add_all([p1,p2,p3,p4,p5])
+        db.session.add(u)
+        db.session.commit()

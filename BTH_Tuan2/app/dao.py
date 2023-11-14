@@ -1,5 +1,6 @@
 from models import Product, Category,User
 from flask_login import LoginManager
+import hashlib
 def load_categories():
     return Category.query.all()
     # return [{
@@ -48,3 +49,7 @@ def load_products(kw = None):
 
 def get_user_id(id):
     return User.query.get(id);
+
+def auth_user(username,password):
+    password=str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
+    return User.query.filter(User.username.__eq__(username.strip()),User.password.__eq__(password.strip())).first()
