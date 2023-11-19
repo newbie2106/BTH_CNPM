@@ -9,7 +9,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:%s@localhost/salea
                                         % quote('Admin@123')
 # Thong bao khi co loi
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
-
+app.config["PAGE_SIZE"] = 8 # Số ptu trên 1 trang = 8
 db = SQLAlchemy(app=app)
 
 login = LoginManager(app=app)
