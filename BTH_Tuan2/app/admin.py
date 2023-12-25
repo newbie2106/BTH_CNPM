@@ -37,8 +37,6 @@ class MyProductView(AuthenticatedUserAdminMV):
 class MyCategoryView(AuthenticatedUserAdminMV):
     column_list = ['name', 'products']
 
-admin.add_view(MyCategoryView(Category, db.session))
-admin.add_view(MyProductView(Product, db.session))
 
 
 class MyStatsView(AuthenticatedUserAdminBV):
@@ -56,4 +54,6 @@ class MyLogoutView(AuthenticatedUser):
 admin.add_view(MyStatsView(name='Giới Thiệu'))
 admin.add_view(MyLogoutView(name='Đăng Xuất'))
 
+admin.add_view(MyCategoryView(Category, db.session))
+admin.add_view(MyProductView(Product, db.session))
 # Tạo thêm 1 trang trong thanh nav /admin

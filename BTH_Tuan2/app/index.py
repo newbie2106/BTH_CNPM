@@ -1,7 +1,7 @@
 import math
-
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session, jsonify
 import dao
+import utils
 from app import app, login
 from flask_login import login_user
 @app.route('/')
@@ -20,6 +20,67 @@ def index():
     # ý nghĩa của dòng pages là phân trang , tổng sp chia cho so lượng sp được quy định
     # trên 1 page sẽ ra được 1 trang
 
+
+@app.context_processor
+def common_resp():
+    return {
+        'catelogies': dao.load_categories(),
+        'cart': utils.count_cart(session.get('cart'))
+
+    }
+
+
+@app.route('/api/cart', methods=['post'])
+def add_cart():
+    cart = session.get('cart')
+    if cart is None:
+        cart = {}
+
+    data = request.json
+    id = str(data.get('id'))
+
+    if id in cart:
+        cart[id]["quantity"] = cart[id]["quantity"] + 1
+
+    else:
+        cart[id] = {
+            "id": id,
+            "name": data.get("name"),
+            "price": data.get("price"),
+            "quantity": 1
+        }
+
+    session['cart'] = cart
+
+    return jsonify(utils.count_cart(cart))
+
+
+@app.route('/api/cart/<product_id>', methods=['put'])
+def update_cart(product_id):
+    cart = session.get('cart')
+    if cart and product_id in cart:
+        quantity = request.json.get('quantity')
+        cart[product_id]['quantity'] = int(quantity)
+
+    session['cart']=cart
+
+    return jsonify(utils.count_cart(cart))
+
+
+@app.route('/api/cart/<product_id>', methods=['delete'])
+def delete_cart(product_id):
+    cart = session.get('cart')
+    if cart and product_id in cart:
+        del cart[product_id]
+
+    session['cart']=cart
+
+    return jsonify(utils.count_cart(cart))
+
+
+@app.route('/cart')
+def cart_list():
+    return render_template('cart.html')
 
 @app.route('/product/<id>')
 def details(id):

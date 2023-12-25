@@ -53,8 +53,8 @@ if __name__ == '__main__':
     from app import app
     with app.app_context():
         db.create_all()
-        # c1 = Category(name = 'Mobile')
-        # c2 = Category(name = 'Tablet')
+        c1 = Category(name = 'Mobile')
+        c2 = Category(name = 'Tablet')
         import hashlib
         u = User(name='HIỆP TRỊNH',
                  username='admin',
@@ -88,6 +88,7 @@ if __name__ == '__main__':
         # db.session.add(c1)
         # db.session.add(c1)
         # db.session.add(c2)
+        # db.session.add_all([p1,p2,p3,p4,p5])
         # db.session.add_all([p6,p7,p8,p9,p10])
-        # # db.session.add(u2)
+        # db.session.add(u2)
         # db.session.commit()
