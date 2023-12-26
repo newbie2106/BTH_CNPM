@@ -17,7 +17,9 @@ class User(db.Model, UserMixin):
     active = Column(Boolean, default=True)
     username = Column(String(50), nullable=False)
     password = Column(String(100), nullable=False)
-    user_role = Column(Enum(UserRole), default=UserRole.ADMIN)
+    avatar = Column(String(500),
+                    default= 'https://upload.wikimedia.org/wikipedia/vi/b/b2/Logo_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_M%E1%BB%9F_TPHCM.png')
+    user_role = Column(Enum(UserRole), default=UserRole.USER)
     def __str__(self):
         return self.name
 
@@ -60,7 +62,7 @@ if __name__ == '__main__':
                  username='admin',
                  password=str(hashlib.md5('123456'.encode('utf-8')).hexdigest()),
                  user_role = UserRole.ADMIN)
-        u2 = User(name='HIỆP USER',
+        u2 = User(name='HIỆP',
                  username='hiep',
                  password=str(hashlib.md5('123456'.encode('utf-8')).hexdigest()),
                  user_role=UserRole.USER)
@@ -90,5 +92,6 @@ if __name__ == '__main__':
         # db.session.add(c2)
         # db.session.add_all([p1,p2,p3,p4,p5])
         # db.session.add_all([p6,p7,p8,p9,p10])
+        # db.session.add(u)
         # db.session.add(u2)
         # db.session.commit()
